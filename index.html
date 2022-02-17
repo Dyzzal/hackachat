@@ -9,26 +9,29 @@
   <script src="//cdn.ably.io/lib/ably-1.js"></script>
 
 <style id="jsbin-css">
-textarea {
-  resize: none;
-}
-#textareabox {
-  width: 1300px;
-  height: 591px;
-  background: black;
-  color: #1aff00;
-  border:1px solid black;
-  outline: none;
-}
-#text{
-  position: relative;
-  width: 1300px;
-  height: 30px;
-  background: black;
-  color: #1aff00;
-  border:1px solid black;
-  outline: none;
-}
+  @media screen {
+    textarea {
+    resize: none;
+  }
+  #textareabox {
+    width: 1300px;
+    height: 591px;
+    background: black;
+    color: #1aff00;
+    border:1px solid black;
+    outline: none;
+  }
+  #text{
+  
+    position: relative;
+    width: 1300px;
+    height: 30px;
+    background: black;
+    color: #1aff00;
+    border:1px solid black;
+    outline: none;
+  }
+}    
 </style>
 </head>
   <body style="background: black;">
@@ -49,6 +52,9 @@ channel.subscribe('alert', function(message) {
   text.value += messageText + '\r\n';
 });
 
+  var w = window.innerWidth;
+var h = window.innerHeight;
+  
 $('input#send').on('click', function() {
   var message = $('input#message').val();
   channel.publish('alert', message);
