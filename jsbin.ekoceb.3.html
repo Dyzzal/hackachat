@@ -1,0 +1,106 @@
+<html>
+<!--
+  Created using jsbin.ably.com
+  Source can be edited via https://jsbin.ably.com/ekoceb/3/edit
+-->
+<head>
+<script src="http://vuejs.org/js/vue.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  <script src="//cdn.ably.io/lib/ably-1.js"></script>
+
+<style id="jsbin-css">
+textarea {
+  resize: none;
+}
+#textareabox {
+  width: 1300px;
+  height: 591px;
+  background: black;
+  color: #1aff00;
+  border:1px solid black;
+  outline: none;
+}
+#text{
+  position: relative;
+  width: 1300px;
+  height: 30px;
+  background: black;
+  color: #1aff00;
+  border:1px solid black;
+  outline: none;
+}
+</style>
+</head>
+  <body style="background: black;">
+  <textarea id="textareabox" name="textarea1" readonly="true"></textarea>
+  <textarea id="text"></textarea>
+  <br><br>
+  </pre>
+  <ul id="received"></ul>
+<script>
+var ably = new Ably.Realtime({ key: 'xVLyHw.7aWeoA:0vMtut067VgiAHKSj-0rjJ8twGZ7j2-XsfyUmC8Bgzs' }),
+    channel = ably.channels.get('jsbin'),
+    $receivedLog = $('#received');
+//var chnl = document.getElementById("chnl");
+channel.subscribe('alert', function(message) {
+  var received = new Date(message.timestamp),
+      messageText = message.data;
+  //$receivedLog.prepend($('<li>').text(messageText));
+  text.value += messageText + '\r\n';
+});
+
+$('input#send').on('click', function() {
+  var message = $('input#message').val();
+  channel.publish('alert', message);
+  //text.value += message + '\r\n';
+});
+
+
+document.getElementById("text").focus();
+var text = document.getElementById("textareabox");
+document.getElementById("text").value = ">";
+
+var hist = [];
+
+addEventListener('click', function(event){
+  document.getElementById("text").focus();
+});  
+
+$("input").keypress(function(event){
+  document.getElementById("text").focus();
+});
+
+function submit(){
+  if(document.getElementById("text").value == ">clear"){
+  text.value = "";
+    document.getElementById("text").value = ">";
+  }else if(document.getElementById("text").value == ">help"){
+  text.value += ">clear.....clears console(idiot)" + '\r\n' + "and that's it for now" + '\r\n';
+    document.getElementById("text").value = ">";
+  }else{
+  var message = $('#text').val();
+  channel.publish('alert', message);
+    document.getElementById("text").value = ">";
+  }}
+
+$("#text").keypress(function (e) {
+    if(e.which === 13 && !e.shiftKey) {
+        e.preventDefault();
+  submit();
+  //text.value += message + '\r\n';
+    }});
+
+/*$("#text").keypress(function (e) {
+    if(e.which === 13 && !e.shiftKey) {
+        e.preventDefault();
+        submit();
+      var message = $('#text').val();
+  channel.publish('alert', message);
+  //text.value += message + '\r\n';
+
+    }
+});*/
+</script>
+</body>
+</html>
+  
